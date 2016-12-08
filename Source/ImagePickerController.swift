@@ -107,6 +107,8 @@ open class ImagePickerController: UIViewController {
 
     subscribe()
     setupConstraints()
+    // need to fake a rotate event
+    handleRotation(Notification(name: NSNotification.Name.UIDeviceOrientationDidChange))
   }
 
   open override func viewWillAppear(_ animated: Bool) {
@@ -373,7 +375,7 @@ extension ImagePickerController: CameraViewDelegate {
       guard let asset = self.galleryView.assets.first else { return }
       self.stack.pushAsset(asset)
     }
-    galleryView.shouldTransform = true
+    galleryView.shouldTransform = false
     bottomContainer.pickerButton.isEnabled = true
 
     UIView.animate(withDuration: 0.3, animations: {
