@@ -58,7 +58,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
     let title = NSAttributedString(string: Configuration.settingsTitle,
       attributes: [
         NSFontAttributeName : Configuration.settingsFont,
-        NSForegroundColorAttributeName : Configuration.settingsColor,
+        NSForegroundColorAttributeName : Configuration.settingsColor
       ])
 
     button.setAttributedTitle(title, for: UIControlState())

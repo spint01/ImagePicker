@@ -11,7 +11,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
 protocol ImageGalleryPanGestureDelegate: class {
 
   func panGestureDidStart()
@@ -215,7 +214,7 @@ extension ImageGalleryView: UICollectionViewDelegate {
         })
         self.selectedStack.dropAsset(asset)
       } else if self.imageLimit == 0 || self.imageLimit > self.selectedStack.assets.count {
-        cell.selectedImageView.image = AssetManager.getImage("selectedImageGallery")
+        cell.selectedImageView.image = Configuration.selectedPhotoImage
         cell.selectedImageView.transform = CGAffineTransform(scaleX: 0, y: 0)
         UIView.animate(withDuration: 0.2, animations: { _ in
           cell.selectedImageView.transform = CGAffineTransform.identity

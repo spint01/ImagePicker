@@ -50,4 +50,8 @@ public struct Configuration {
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
+
+  // MARK: Selection Image
+
+  public static var selectedPhotoImage: UIImage? = AssetManager.getImage("selectedImageGallery")
 }
