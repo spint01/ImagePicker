@@ -7,6 +7,7 @@ import Photos
   func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage])
   func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage])
   func cancelButtonDidPress(_ imagePicker: ImagePickerController)
+  @objc optional func photoAdded(_ imagePicker: ImagePickerController, photo: PHAsset)
 }
 
 open class ImagePickerController: UIViewController {
@@ -258,6 +259,10 @@ open class ImagePickerController: UIViewController {
     return true
   }
 
+  open override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+    return .fade
+  }
+
   open func collapseGalleryView(_ completion: (() -> Void)?) {
     galleryView.collectionViewLayout.invalidateLayout()
     UIView.animate(withDuration: 0.3, animations: {
@@ -374,6 +379,7 @@ extension ImagePickerController: CameraViewDelegate {
     galleryView.fetchPhotos() {
       guard let asset = self.galleryView.assets.first else { return }
       self.stack.pushAsset(asset)
+      self.delegate?.photoAdded?(self, photo: asset)
     }
     galleryView.shouldTransform = false
     bottomContainer.pickerButton.isEnabled = true

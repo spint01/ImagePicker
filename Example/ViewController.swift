@@ -13,6 +13,8 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+//    self.extendedLayoutIncludesOpaqueBars = true
   }
 
   @IBAction func ImagePickerButtonTouched(_ sender: Any) {
@@ -20,8 +22,37 @@ class ViewController: UIViewController {
 
     let ctr = ImagePickerController()
     ctr.delegate = self
+//    ctr.modalPresentationCapturesStatusBarAppearance = true
     present(ctr, animated: true, completion: nil)
+
+//    let navctr = UINavigationController(rootViewController: ctr)
+//    navctr.modalPresentationCapturesStatusBarAppearance = false
+
+//    present(navctr, animated: true, completion: nil)
   }
+
+  @IBAction func TestButtonTouched(_ sender: Any) {
+
+    let ctr = Test2ViewController()
+    ctr.modalPresentationCapturesStatusBarAppearance = true
+    present(ctr, animated: true, completion: nil)
+
+    //    if let ctr = self.storyboard?.instantiateViewController(withIdentifier: "TestViewController") {
+//      ctr.modalPresentationCapturesStatusBarAppearance = true
+//      present(ctr, animated: true, completion: {
+//        print("done")
+//        self.setNeedsStatusBarAppearanceUpdate()
+//      })
+//    }
+  }
+
+//  open override var prefersStatusBarHidden: Bool {
+//    return false
+//  }
+//
+//  override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+//    return .fade
+//  }
 }
 
 extension ViewController: ImagePickerDelegate {
