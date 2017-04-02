@@ -32,7 +32,7 @@ extension ImageGalleryView: UICollectionViewDataSource {
         }
 
         if self.selectedStack.containsAsset(asset) {
-          cell.selectedImageView.image = Configuration.selectedPhotoImage
+          cell.selectedImageView.image = self.configuration.selectedPhotoImage
           cell.selectedImageView.alpha = 1
           cell.selectedImageView.transform = CGAffineTransform.identity
         } else {

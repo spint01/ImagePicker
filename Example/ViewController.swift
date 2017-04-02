@@ -18,7 +18,7 @@ class ViewController: UIViewController {
   }
 
   @IBAction func ImagePickerButtonTouched(_ sender: Any) {
-    Configuration.collapseCollectionViewWhileShot = false
+//    Configuration.collapseCollectionViewWhileShot = false
 
     let ctr = ImagePickerController()
     ctr.delegate = self
