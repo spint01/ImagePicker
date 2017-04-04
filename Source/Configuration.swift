@@ -2,6 +2,10 @@ import UIKit
 
 public struct Configuration {
 
+  public init() {
+    // This initializer intentionally left empty
+  }
+
   // MARK: Colors
 
   public var backgroundColor = UIColor(red: 0.15, green: 0.19, blue: 0.24, alpha: 1)
