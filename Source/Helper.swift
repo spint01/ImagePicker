@@ -1,9 +1,9 @@
 import UIKit
 import AVFoundation
 
-struct Helper {
+public struct Helper {
 
-  static func rotationTransform() -> CGAffineTransform {
+  public static func rotationTransform() -> CGAffineTransform {
     switch UIDevice.current.orientation {
     case .landscapeLeft:
       return CGAffineTransform(rotationAngle: CGFloat.pi * 0.5)
@@ -16,7 +16,7 @@ struct Helper {
     }
   }
 
-  static func videoOrientation() -> AVCaptureVideoOrientation {
+  public static func videoOrientation() -> AVCaptureVideoOrientation {
     switch UIDevice.current.orientation {
     case .portrait: return .portrait
     case .landscapeLeft: return .landscapeRight
