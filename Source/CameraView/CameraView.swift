@@ -60,7 +60,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
     let title = NSAttributedString(string: self.configuration.settingsTitle,
       attributes: [
         NSFontAttributeName : self.configuration.settingsFont,
-        NSForegroundColorAttributeName : self.configuration.settingsColor,
+        NSForegroundColorAttributeName : self.configuration.settingsColor
       ])
 
     button.setAttributedTitle(title, for: UIControlState())
@@ -89,14 +89,13 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
   var locationManager: LocationManager?
   var startOnFrontCamera: Bool = false
 
-
   public init(configuration: Configuration? = nil) {
     if let configuration = configuration {
       self.configuration = configuration
     }
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
