@@ -20,40 +20,22 @@ class ViewController: UIViewController {
   @IBAction func ImagePickerButtonTouched(_ sender: Any) {
     var config = Configuration()
     config.collapseCollectionViewWhileShot = false
-
+    config.selectedPhotoImage = getImageWithColorBorder(color: UIColor.blue, size: CGSize(width: 20, height: 20))
     let ctr = ImagePickerController(configuration: config)
     ctr.delegate = self
 //    ctr.modalPresentationCapturesStatusBarAppearance = true
     present(ctr, animated: true, completion: nil)
-
-//    let navctr = UINavigationController(rootViewController: ctr)
-//    navctr.modalPresentationCapturesStatusBarAppearance = false
-
-//    present(navctr, animated: true, completion: nil)
   }
 
-  @IBAction func TestButtonTouched(_ sender: Any) {
-
-    let ctr = Test2ViewController()
-    ctr.modalPresentationCapturesStatusBarAppearance = true
-    present(ctr, animated: true, completion: nil)
-
-    //    if let ctr = self.storyboard?.instantiateViewController(withIdentifier: "TestViewController") {
-//      ctr.modalPresentationCapturesStatusBarAppearance = true
-//      present(ctr, animated: true, completion: {
-//        print("done")
-//        self.setNeedsStatusBarAppearanceUpdate()
-//      })
-//    }
+  func getImageWithColorBorder(color: UIColor, size: CGSize) -> UIImage {
+    let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+    UIGraphicsBeginImageContextWithOptions(size, false, 0)
+    color.setStroke()
+    UIRectFrame(rect)
+    let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+    UIGraphicsEndImageContext()
+    return image
   }
-
-//  open override var prefersStatusBarHidden: Bool {
-//    return false
-//  }
-//
-//  override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-//    return .fade
-//  }
 }
 
 extension ViewController: ImagePickerDelegate {
@@ -76,6 +58,7 @@ extension ViewController: ImagePickerDelegate {
       let alert = UIAlertController(title: "Added Photo", message: photo.description, preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
 
+      alert.view.transform = Helper.rotationTransform()
       imagePicker.present(alert, animated: false, completion: nil)
     }
   }

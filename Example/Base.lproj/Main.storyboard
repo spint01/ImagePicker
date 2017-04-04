@@ -29,14 +29,6 @@
                                     <action selector="ImagePickerButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Rhp-pg-yaH"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLQ-p1-VCg">
-                                <rect key="frame" x="27" y="126" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Test"/>
-                                <connections>
-                                    <action selector="TestButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OQb-s0-4M0"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -45,65 +37,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1080.8" y="138.98050974512745"/>
-        </scene>
-        <!--Test View Controller-->
-        <scene sceneID="sJF-Mm-b8O">
-            <objects>
-                <viewController storyboardIdentifier="TestViewController" automaticallyAdjustsScrollViewInsets="NO" id="2O6-DJ-GhF" customClass="TestViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Mj3-Iz-UkE"/>
-                        <viewControllerLayoutGuide type="bottom" id="WOD-2F-0lD"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="vIV-aS-OYR">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dii-9A-5nV">
-                                <rect key="frame" x="135.5" y="52" width="104" height="21"/>
-                                <color key="backgroundColor" red="1" green="0.1655273438" blue="0.14260382399999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B8l-sk-7as">
-                                <rect key="frame" x="160" y="104" width="54" height="30"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Dismiss"/>
-                                <connections>
-                                    <action selector="dismissTouched:" destination="2O6-DJ-GhF" eventType="touchUpInside" id="E6c-rh-hhI"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="B8l-sk-7as" firstAttribute="centerX" secondItem="vIV-aS-OYR" secondAttribute="centerX" id="0Qd-EP-D7O"/>
-                            <constraint firstItem="Dii-9A-5nV" firstAttribute="top" secondItem="Mj3-Iz-UkE" secondAttribute="bottom" constant="32" id="721-f0-Rml"/>
-                            <constraint firstItem="Dii-9A-5nV" firstAttribute="centerX" secondItem="vIV-aS-OYR" secondAttribute="centerX" id="bDG-nj-uuZ"/>
-                            <constraint firstItem="B8l-sk-7as" firstAttribute="top" secondItem="Dii-9A-5nV" secondAttribute="bottom" constant="31" id="s7g-cf-hpb"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="daC-dI-2QI" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1871" y="140"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="gB8-5H-Shb">
-            <objects>
-                <viewController id="JTV-Iw-cfE" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="1Gs-yS-ZA0"/>
-                        <viewControllerLayoutGuide type="bottom" id="SOg-LC-5Zg"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="b9z-tu-ECp">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6a0-iJ-0PK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2532" y="143"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dNL-01-u9h">
