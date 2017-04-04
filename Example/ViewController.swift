@@ -18,9 +18,10 @@ class ViewController: UIViewController {
   }
 
   @IBAction func ImagePickerButtonTouched(_ sender: Any) {
-//    Configuration.collapseCollectionViewWhileShot = false
+    var config = Configuration()
+    config.collapseCollectionViewWhileShot = false
 
-    let ctr = ImagePickerController()
+    let ctr = ImagePickerController(configuration: config)
     ctr.delegate = self
 //    ctr.modalPresentationCapturesStatusBarAppearance = true
     present(ctr, animated: true, completion: nil)

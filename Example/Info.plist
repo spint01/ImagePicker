@@ -28,16 +28,16 @@
 	<array>
 		<string>armv7</string>
 	</array>
-  <key>NSCalendarsUsageDescription</key>
-  <string>ImagePicker wants to access your Calendar</string>
-  <key>NSCameraUsageDescription</key>
-  <string>ImagePicker wants to access your camera</string>
-  <key>NSLocationUsageDescription</key>
-  <string>Using location</string>
-  <key>NSLocationWhenInUseUsageDescription</key>
-  <string>ImagePicker wants to access your location for Photos</string>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>ImagePicker wants to access your photos</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>ImagePicker wants to access your Calendar</string>
+	<key>NSCameraUsageDescription</key>
+	<string>ImagePicker wants to access your camera</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Using location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>ImagePicker wants to access your location for Photos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ImagePicker wants to access your photos</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -47,7 +47,6 @@
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
