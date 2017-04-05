@@ -11,6 +11,8 @@ import ImagePicker
 
 class ViewController: UIViewController {
 
+  var selectedAssets: [PHAsset]?
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -21,6 +23,8 @@ class ViewController: UIViewController {
     var config = Configuration()
     config.collapseCollectionViewWhileShot = false
     config.selectedPhotoImage = getImageWithColorBorder(color: UIColor.blue, size: CGSize(width: 20, height: 20))
+    config.preselectedAssets = selectedAssets
+
     let ctr = ImagePickerController(configuration: config)
     ctr.delegate = self
 //    ctr.modalPresentationCapturesStatusBarAppearance = true
@@ -45,6 +49,8 @@ extension ViewController: ImagePickerDelegate {
   }
   
   func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+    selectedAssets = imagePicker.stack.assets
+
     dismiss(animated: true, completion: nil)
   }
 
