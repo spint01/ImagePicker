@@ -204,7 +204,9 @@ open class ImagePickerController: UIViewController {
     alertController.addAction(alertAction)
     alertController.addAction(cancelAction)
 
-    present(alertController, animated: true, completion: nil)
+    present(alertController, animated: true, completion: {
+      alertController.view.transform = Helper.rotationTransform()
+    })
   }
 
   func hideViews() {
