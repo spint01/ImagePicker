@@ -1,4 +1,5 @@
 import UIKit
+import Photos
 
 public struct Configuration {
 
@@ -61,4 +62,8 @@ public struct Configuration {
   // MARK: Selection Image
 
   public var selectedPhotoImage: UIImage? = AssetManager.getImage("selectedImageGallery")
+
+  // MARK: Pre-selected Assets
+
+  public var preselectedAssets: [PHAsset]?
 }

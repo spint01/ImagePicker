@@ -123,6 +123,12 @@ open class ImagePickerController: UIViewController {
 
     subscribe()
     setupConstraints()
+
+    if let selectedAssets = configuration.preselectedAssets {
+      // select assets in gallery and stack
+      galleryView.selectedStack.assets = selectedAssets
+      NotificationCenter.default.post(name: Notification.Name(rawValue: ImageStack.Notifications.stackDidReload), object: galleryView.selectedStack, userInfo: nil)
+    }
     // need to fake a rotate event
     handleRotation(Notification(name: NSNotification.Name.UIDeviceOrientationDidChange))
   }
