@@ -159,19 +159,64 @@ class CameraMan {
       self.stillImageOutput?.captureStillImageAsynchronously(from: connection) {
         buffer, error in
 
-        guard let buffer = buffer, error == nil && CMSampleBufferIsValid(buffer),
-          let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer),
-          let image = UIImage(data: imageData)
+        guard let buffer = buffer, error == nil && CMSampleBufferIsValid(buffer)
           else {
             DispatchQueue.main.async {
               completion?()
             }
             return
         }
+        if let location = location, var metaDict = CMCopyDictionaryOfAttachments(nil, buffer, kCMAttachmentMode_ShouldPropagate) as? [String: Any] {
+          // Get the existing metadata dictionary (if there is one)
 
-        self.savePhoto(image, location: location, completion: completion)
+          // Append the GPS metadata to the existing metadata
+          metaDict[kCGImagePropertyGPSDictionary as String] = location.exifMetadata()
+
+          // Save the new metadata back to the buffer without duplicating any data
+          CMSetAttachments(buffer, metaDict as CFDictionary, kCMAttachmentMode_ShouldPropagate)
+        }
+
+        // Get JPG image Data from the buffer
+        guard let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer) else {
+          // There was a problem; handle it here
+          DispatchQueue.main.async {
+            completion?()
+          }
+          return
+        }
+
+        // Now save this image to the Camera Roll (will save with GPS metadata embedded in the file)
+        self.savePhoto(withData: imageData, location: location, completion: completion)
       }
     }
+  }
+
+  func savePhoto(withData data: Data, location: CLLocation?, completion: (() -> Void)? = nil) {
+    PHPhotoLibrary.shared().performChanges({
+      if #available(iOS 9.0, *) {
+        // For iOS 9+ we can skip the temporary file step and write the image data from the buffer directly to an asset
+        let request = PHAssetCreationRequest.forAsset()
+        request.addResource(with: PHAssetResourceType.photo, data: data, options: nil)
+        request.creationDate = Date()
+        request.location = location
+      } else {
+        // Fallback on earlier versions; write a temporary file and then add this file to the Camera Roll using the Photos API
+        let tmpURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("tempPhoto").appendingPathExtension("jpg")
+        do {
+          try data.write(to: tmpURL)
+
+          let request = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: tmpURL)
+          request?.creationDate = Date()
+          request?.location = location
+        } catch {
+          // Error writing the data; photo is not appended to the camera roll
+        }
+      }
+    }, completionHandler: { _ in
+      DispatchQueue.main.async {
+        completion?()
+      }
+    })
   }
 
   func savePhoto(_ image: UIImage, location: CLLocation?, completion: (() -> Void)? = nil) {
