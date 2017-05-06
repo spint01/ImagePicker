@@ -150,7 +150,7 @@ class CameraMan {
     }
   }
 
-  func takePhoto(_ previewLayer: AVCaptureVideoPreviewLayer, location: CLLocation?, completion: (() -> Void)? = nil) {
+  func takePhoto(_ previewLayer: AVCaptureVideoPreviewLayer, locationManager: LocationManager?, completion: (() -> Void)? = nil) {
     guard let connection = stillImageOutput?.connection(withMediaType: AVMediaTypeVideo) else { return }
 
     connection.videoOrientation = Helper.videoOrientation()
@@ -166,11 +166,11 @@ class CameraMan {
             }
             return
         }
-        if let location = location, var metaDict = CMCopyDictionaryOfAttachments(nil, buffer, kCMAttachmentMode_ShouldPropagate) as? [String: Any] {
+        if let location = locationManager?.latestLocation, var metaDict = CMCopyDictionaryOfAttachments(nil, buffer, kCMAttachmentMode_ShouldPropagate) as? [String: Any] {
           // Get the existing metadata dictionary (if there is one)
 
           // Append the GPS metadata to the existing metadata
-          metaDict[kCGImagePropertyGPSDictionary as String] = location.exifMetadata()
+          metaDict[kCGImagePropertyGPSDictionary as String] = location.exifMetadata(heading: locationManager?.latestHeading)
 
           // Save the new metadata back to the buffer without duplicating any data
           CMSetAttachments(buffer, metaDict as CFDictionary, kCMAttachmentMode_ShouldPropagate)
@@ -186,7 +186,7 @@ class CameraMan {
         }
 
         // Now save this image to the Camera Roll (will save with GPS metadata embedded in the file)
-        self.savePhoto(withData: imageData, location: location, completion: completion)
+        self.savePhoto(withData: imageData, location: locationManager?.latestLocation, completion: completion)
       }
     }
   }

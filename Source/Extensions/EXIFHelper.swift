@@ -31,11 +31,32 @@ extension CLLocation {
     GPSMetadata[(kCGImagePropertyGPSVersion as String)] = "2.2.0.0"
 
     if let heading = heading {
-      GPSMetadata[(kCGImagePropertyGPSImgDirection as String)] = heading.trueHeading
+      let trueHeading = headingAdjusted(heading.trueHeading)
+      GPSMetadata[(kCGImagePropertyGPSImgDirection as String)] = trueHeading
       GPSMetadata[(kCGImagePropertyGPSImgDirectionRef as String)] = "T"
+
+      if self.course <= 0 {
+        GPSMetadata[(kCGImagePropertyGPSDestBearing as String)] = trueHeading
+        GPSMetadata[(kCGImagePropertyGPSDestBearingRef as String)] = "T"
+      } else {
+        GPSMetadata[(kCGImagePropertyGPSDestBearing as String)] = headingAdjusted(self.course)
+        GPSMetadata[(kCGImagePropertyGPSDestBearingRef as String)] = "T"
+      }
     }
 
     return GPSMetadata
+  }
+
+  func headingAdjusted(_ heading: CLLocationDirection) -> CLLocationDirection {
+    let adjAngle: CLLocationDirection = {
+      switch UIDevice.current.orientation {
+      case .landscapeLeft:  return 90
+      case .landscapeRight: return -90
+      case .portraitUpsideDown: return -180
+      default: return 0 // .portrait, .faceDown, .faceUp
+      }
+    }()
+    return (heading + adjAngle).truncatingRemainder(dividingBy: 360)
   }
 }
 

@@ -210,7 +210,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
         })
     })
 
-    cameraMan.takePhoto(previewLayer, location: locationManager?.latestLocation) {
+    cameraMan.takePhoto(previewLayer, locationManager: locationManager) {
       completion()
       self.delegate?.imageToLibrary()
     }
