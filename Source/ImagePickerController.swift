@@ -26,6 +26,7 @@ open class ImagePickerController: UIViewController {
     galleryView.selectedStack = self.stack
     galleryView.collectionView.layer.anchorPoint = CGPoint(x: 0, y: 0)
     galleryView.imageLimit = self.imageLimit
+    galleryView.isHidden = self.configuration.hideGallery
 
     return galleryView
     }()
@@ -172,6 +173,7 @@ open class ImagePickerController: UIViewController {
   }
 
   func checkStatus() {
+    if configuration.hideGallery { return }
     let currentStatus = PHPhotoLibrary.authorizationStatus()
     guard currentStatus != .authorized else { return }
 
