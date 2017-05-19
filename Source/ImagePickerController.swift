@@ -427,14 +427,32 @@ extension ImagePickerController: CameraViewDelegate {
   // MARK: - Rotation
 
   open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    if Helper.runningOnIpad {
+      return .all
+    } else {
     return .portrait
+  }
+  }
+
+  open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    coordinator.animate(alongsideTransition: { context in
+    if Helper.runningOnIpad {
+      // on iPad we move all the views instead of rotating them
+        self.cameraController.previewLayer?.connection.videoOrientation = Helper.videoOrientation()
+
+        let constant = self.galleryView.frame.height
+        self.galleryView.frame.origin.y = size.height - self.bottomContainer.frame.height - constant
+        self.galleryView.frame.size.width = size.width
+        self.galleryView.frame.size.height = constant
+        self.galleryView.updateFrames()
+        self.galleryView.collectionViewLayout.invalidateLayout()
+      }
+    }, completion: { context in
+    })
   }
 
   public func handleRotation(_ note: Notification) {
-    if Helper.runningOnIpad {
-      // on iPad we move all the views instead of rotating them
-      cameraController.previewLayer?.connection.videoOrientation = Helper.videoOrientation()
-    } else {
+    if !Helper.runningOnIpad {
       let rotate = Helper.rotationTransform()
 
       UIView.animate(withDuration: 0.25, animations: {
