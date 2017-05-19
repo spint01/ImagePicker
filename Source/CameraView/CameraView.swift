@@ -125,7 +125,6 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    previewLayer?.connection.videoOrientation = .portrait
     locationManager?.startUpdatingLocation()
   }
 
@@ -145,6 +144,11 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
     layer.frame = view.layer.frame
     view.clipsToBounds = true
 
+    if Helper.runningOnIpad {
+      layer.connection.videoOrientation = Helper.videoOrientation()
+    } else {
+      layer.connection.videoOrientation = .portrait
+    }
     previewLayer = layer
   }
 
@@ -164,6 +168,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
     blurView.frame = view.bounds
     containerView.frame = view.bounds
     capturedImageView.frame = view.bounds
+    previewLayer?.frame = view.bounds
   }
 
   // MARK: - Actions

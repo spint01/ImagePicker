@@ -429,26 +429,31 @@ extension ImagePickerController: CameraViewDelegate {
   }
 
   public func handleRotation(_ note: Notification) {
-    let rotate = Helper.rotationTransform()
+    if Helper.runningOnIpad {
+      // on iPad we move all the views instead of rotating them
+      cameraController.previewLayer?.connection.videoOrientation = Helper.videoOrientation()
+    } else {
+      let rotate = Helper.rotationTransform()
 
-    UIView.animate(withDuration: 0.25, animations: {
-      [self.topView.rotateCamera, self.bottomContainer.pickerButton,
-        self.bottomContainer.stackView, self.bottomContainer.doneButton].forEach {
-        $0.transform = rotate
-      }
+      UIView.animate(withDuration: 0.25, animations: {
+        [self.topView.rotateCamera, self.bottomContainer.pickerButton,
+          self.bottomContainer.stackView, self.bottomContainer.doneButton].forEach {
+          $0.transform = rotate
+        }
 
-      self.galleryView.collectionViewLayout.invalidateLayout()
+        self.galleryView.collectionViewLayout.invalidateLayout()
 
-      let translate: CGAffineTransform
-      if [UIDeviceOrientation.landscapeLeft, UIDeviceOrientation.landscapeRight]
-        .contains(UIDevice.current.orientation) {
-        translate = CGAffineTransform(translationX: -20, y: 15)
-      } else {
-        translate = CGAffineTransform.identity
-      }
+        let translate: CGAffineTransform
+        if [UIDeviceOrientation.landscapeLeft, UIDeviceOrientation.landscapeRight]
+          .contains(UIDevice.current.orientation) {
+          translate = CGAffineTransform(translationX: -20, y: 15)
+        } else {
+          translate = CGAffineTransform.identity
+        }
 
-      self.topView.flashButton.transform = rotate.concatenating(translate)
-    })
+        self.topView.flashButton.transform = rotate.concatenating(translate)
+      })
+    }
   }
 }
 

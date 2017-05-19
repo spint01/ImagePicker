@@ -3,6 +3,8 @@ import AVFoundation
 
 public struct Helper {
 
+  static let runningOnIpad = UIDevice.current.userInterfaceIdiom == .pad
+
   public static func rotationTransform() -> CGAffineTransform {
     switch UIDevice.current.orientation {
     case .landscapeLeft:
