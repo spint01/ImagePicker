@@ -76,7 +76,7 @@ open class ImagePickerController: UIViewController {
   open var imageLimit = 0
   open var preferredImageSize: CGSize?
   open var startOnFrontCamera = false
-  var totalSize: CGSize { return UIScreen.main.bounds.size }
+  var totalSize: CGSize { return self.view.bounds.size }
   var initialFrame: CGRect?
   var initialContentOffset: CGPoint?
   var numberOfCells: Int?
@@ -123,6 +123,7 @@ open class ImagePickerController: UIViewController {
     cameraController.view.addGestureRecognizer(panGestureRecognizer)
 
     subscribe()
+    UIDevice.current.beginGeneratingDeviceOrientationNotifications()
     setupConstraints()
 
     if let selectedAssets = configuration.preselectedAssets {
@@ -139,8 +140,8 @@ open class ImagePickerController: UIViewController {
 
     _ = try? AVAudioSession.sharedInstance().setActive(true)
 
-    statusBarHidden = UIApplication.shared.isStatusBarHidden
-    UIApplication.shared.setStatusBarHidden(true, with: .fade)
+//    statusBarHidden = UIApplication.shared.isStatusBarHidden
+//    UIApplication.shared.setStatusBarHidden(true, with: .fade)
   }
 
   open override func viewDidAppear(_ animated: Bool) {
@@ -165,7 +166,7 @@ open class ImagePickerController: UIViewController {
 
   open override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    UIApplication.shared.setStatusBarHidden(statusBarHidden, with: .fade)
+//    UIApplication.shared.setStatusBarHidden(statusBarHidden, with: .fade)
   }
 
   open func resetAssets() {

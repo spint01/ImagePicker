@@ -154,6 +154,7 @@ class CameraMan {
     guard let connection = stillImageOutput?.connection(withMediaType: AVMediaTypeVideo) else { return }
 
     connection.videoOrientation = Helper.videoOrientation()
+    let v = connection.videoMaxScaleAndCropFactor
 
     queue.async {
       self.stillImageOutput?.captureStillImageAsynchronously(from: connection) {
@@ -249,6 +250,22 @@ class CameraMan {
         device.focusPointOfInterest = point
       }
     }
+  }
+
+  func zoom(_ zoom: CGFloat) {
+    guard let device = currentInput?.device else { return }
+
+    queue.async {
+      self.lock {
+        var factor = zoom
+        factor = max(1, min(factor, device.activeFormat.videoMaxZoomFactor))
+        device.videoZoomFactor = factor
+      }
+    }
+  }
+
+  func zoom() -> CGFloat {
+    return currentInput?.device.videoZoomFactor ?? 1.0
   }
 
   // MARK: - Lock
