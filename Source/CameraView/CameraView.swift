@@ -127,7 +127,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
     view.addGestureRecognizer(pinchGestureRecognizer)
 
     cameraMan.delegate = self
-    cameraMan.setup(self.startOnFrontCamera)
+    cameraMan.setup(self.startOnFrontCamera, albumName: configuration.photoAlbumName)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -242,8 +242,8 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
   // MARK: - Camera methods
 
   func focusTo(_ point: CGPoint) {
-    let convertedPoint = CGPoint(x: point.x / UIScreen.main.bounds.width,
-                                 y:point.y / UIScreen.main.bounds.height)
+    let convertedPoint = CGPoint(x: point.x / view.bounds.width,
+                                 y:point.y / view.bounds.height)
 
     cameraMan.focus(convertedPoint)
 

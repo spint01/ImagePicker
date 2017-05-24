@@ -18,6 +18,7 @@ class CameraMan {
   var frontCamera: AVCaptureDeviceInput?
   var stillImageOutput: AVCaptureStillImageOutput?
   var startOnFrontCamera: Bool = false
+  var albumName: String?
 
   deinit {
     stop()
@@ -25,8 +26,9 @@ class CameraMan {
 
   // MARK: - Setup
 
-  func setup(_ startOnFrontCamera: Bool = false) {
+  func setup(_ startOnFrontCamera: Bool = false, albumName: String? = nil) {
     self.startOnFrontCamera = startOnFrontCamera
+    self.albumName = albumName
     checkPermission()
   }
 
@@ -199,6 +201,21 @@ class CameraMan {
         request.addResource(with: PHAssetResourceType.photo, data: data, options: nil)
         request.creationDate = Date()
         request.location = location
+
+        // save photo in given named album if set
+        if let albumName = self.albumName, !albumName.isEmpty {
+          var albumChangeRequest: PHAssetCollectionChangeRequest?
+
+          if let assetCollection = self.fetchAssetCollectionForAlbum(albumName) {
+            albumChangeRequest = PHAssetCollectionChangeRequest(for: assetCollection)
+          } else {
+            albumChangeRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
+          }
+          if let albumChangeRequest = albumChangeRequest, let assetPlaceholder = request.placeholderForCreatedAsset {
+            let enumeration: NSArray = [assetPlaceholder]
+            albumChangeRequest.addAssets(enumeration)
+          }
+        }
       } else {
         // Fallback on earlier versions; write a temporary file and then add this file to the Camera Roll using the Photos API
         let tmpURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("tempPhoto").appendingPathExtension("jpg")
@@ -219,17 +236,26 @@ class CameraMan {
     })
   }
 
-  func savePhoto(_ image: UIImage, location: CLLocation?, completion: (() -> Void)? = nil) {
-    PHPhotoLibrary.shared().performChanges({
-      let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
-      request.creationDate = Date()
-      request.location = location
-      }, completionHandler: { _ in
-        DispatchQueue.main.async {
-          completion?()
-        }
-    })
+  func fetchAssetCollectionForAlbum(_ albumName: String) -> PHAssetCollection? {
+
+    let fetchOptions = PHFetchOptions()
+    fetchOptions.predicate = NSPredicate(format: "title = %@", albumName)
+    let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+
+    return collection.firstObject
   }
+  
+//  func savePhoto(_ image: UIImage, location: CLLocation?, completion: (() -> Void)? = nil) {
+//    PHPhotoLibrary.shared().performChanges({
+//      let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
+//      request.creationDate = Date()
+//      request.location = location
+//      }, completionHandler: { _ in
+//        DispatchQueue.main.async {
+//          completion?()
+//        }
+//    })
+//  }
 
   func flash(_ mode: AVCaptureFlashMode) {
     guard let device = currentInput?.device, device.isFlashModeSupported(mode) else { return }

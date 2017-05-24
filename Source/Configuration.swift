@@ -50,6 +50,7 @@ public struct Configuration {
   public var recordLocation = true
   public var allowMultiplePhotoSelection = true
   public var hideGallery = false
+  public var photoAlbumName: String?
 
   // MARK: Images
   public var indicatorView: UIView = {
