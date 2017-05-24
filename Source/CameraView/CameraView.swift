@@ -268,51 +268,6 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
   }
 
   // MARK: - Pinch
-/*
- var lastScale: CGFloat = 1.0
-  var lastPoint = CGPoint.zero
-
-  func pinchGestureRecognizerHandler(_ gesture: UIPinchGestureRecognizer) {
-//    print("Gesture state: \(gesture.state.rawValue)")
-    if gesture.state == .ended {
-      print("Ended Pinch change Zoom: \(lastScale)")
-      //    var factor = self.pivotPinchScale * gesture.scale
-      //    factor = max(1, min(factor, device.activeFormat.videoMaxZoomFactor))
-      //    device.videoZoomFactor = factor
-
-      cameraMan.zoom(self.lastScale)
-    }
-
-    if gesture.numberOfTouches < 2 {
-      return
-    }
-    if gesture.state == .began {
-//      lastScale = 1.0
-      lastPoint = gesture.location(in: self.view)
-    }
-    if gesture.state == .changed {
-      // Scale
-//      if gesture.scale < 1.0 {
-//        print("scale < 1.0")
-//        return
-//      }
-//      if gesture.scale > 4.0 {
-//        print("scale > 2.0")
-//        return
-//      }
-      let scale: CGFloat = 1.0 - (lastScale - gesture.scale)
-      //let scale: CGFloat = gesture.scale
-      print("scale: \(scale) gs: \(gesture.scale) last: \(lastScale - gesture.scale)")
-      view.layer.setAffineTransform(view.layer.affineTransform().scaledBy(x: scale, y: scale))
-      lastScale = gesture.scale
-
-      // Translate
-      let point: CGPoint = gesture.location(in: self.view)
-      view.layer.setAffineTransform(view.layer.affineTransform().translatedBy(x: point.x - lastPoint.x, y: point.y - lastPoint.y))
-      lastPoint = gesture.location(in: self.view)
-    }
-  }
-*/
 
   func pinchGestureRecognizerHandler(_ gesture: UIPinchGestureRecognizer) {
 

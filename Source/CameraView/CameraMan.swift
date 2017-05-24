@@ -154,7 +154,6 @@ class CameraMan {
     guard let connection = stillImageOutput?.connection(withMediaType: AVMediaTypeVideo) else { return }
 
     connection.videoOrientation = Helper.videoOrientation()
-    let v = connection.videoMaxScaleAndCropFactor
 
     queue.async {
       self.stillImageOutput?.captureStillImageAsynchronously(from: connection) {
@@ -297,6 +296,7 @@ class CameraMan {
 
   func preferredPresets() -> [String] {
     return [
+      AVCaptureSessionPresetPhoto,
       AVCaptureSessionPresetHigh,
       AVCaptureSessionPresetMedium,
       AVCaptureSessionPresetLow
