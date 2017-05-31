@@ -128,7 +128,7 @@ open class ImageGalleryView: UIView {
   }
 
   func updateFrames() {
-    let totalWidth = UIScreen.main.bounds.width
+    let totalWidth = self.bounds.width
     frame.size.width = totalWidth
     let collectionFrame = frame.height == Dimensions.galleryBarHeight ? 100 + Dimensions.galleryBarHeight : frame.height
     topSeparator.frame = CGRect(x: 0, y: 0, width: totalWidth, height: Dimensions.galleryBarHeight)
