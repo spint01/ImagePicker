@@ -24,7 +24,8 @@ class ViewController: UIViewController {
     config.collapseCollectionViewWhileShot = false
     config.selectedPhotoImage = getImageWithColorBorder(color: UIColor.blue, size: CGSize(width: 20, height: 20))
     //config.preselectedAssets = selectedAssets
-    config.hideGallery = false
+    config.hideGallery = true
+    config.photoAlbumName = "ImagePicker"
 
     let ctr = ImagePickerController(configuration: config)
     ctr.delegate = self
