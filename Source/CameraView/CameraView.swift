@@ -94,7 +94,8 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
   var animationTimer: Timer?
   var locationManager: LocationManager?
   var startOnFrontCamera: Bool = false
-  var pivotPinchScale: CGFloat = 1
+  var pivotPinchScale: CGFloat = 1.0
+  var maxZoomFactor: CGFloat = 3.5
 
   public init(configuration: Configuration? = nil) {
     if let configuration = configuration {
@@ -270,12 +271,19 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
   // MARK: - Pinch
 
   func pinchGestureRecognizerHandler(_ gesture: UIPinchGestureRecognizer) {
-
       switch gesture.state {
       case .began:
-        self.pivotPinchScale = cameraMan.zoom()
+        pivotPinchScale = cameraMan.zoomFactor()
+//        print("pivotPinchScale: \(pivotPinchScale) maxZoom: \(cameraMan.maxZoomFactor())")
       case .changed:
-        cameraMan.zoom(self.pivotPinchScale * gesture.scale)
+        let newValue: CGFloat = pivotPinchScale * gesture.scale
+        let factor = newValue < 1 ? 1 : newValue > maxZoomFactor ? maxZoomFactor : newValue
+
+        if factor != cameraMan.zoomFactor() {
+//          print("pinchGesture: \(gesture.scale) new: \(factor)")
+          cameraMan.zoomFactor(factor)
+//          NotificationCenter.default.post(name: Notification.Name(rawValue: ZoomView.Notifications.zoomValueChanged), object: self, userInfo: ["newValue": newValue])
+        }
       case .failed, .ended:
         break
       default:

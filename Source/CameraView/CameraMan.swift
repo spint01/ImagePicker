@@ -244,7 +244,7 @@ class CameraMan {
 
     return collection.firstObject
   }
-  
+
 //  func savePhoto(_ image: UIImage, location: CLLocation?, completion: (() -> Void)? = nil) {
 //    PHPhotoLibrary.shared().performChanges({
 //      let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
@@ -277,7 +277,7 @@ class CameraMan {
     }
   }
 
-  func zoom(_ zoom: CGFloat) {
+  func zoomFactor(_ zoom: CGFloat) {
     guard let device = currentInput?.device else { return }
 
     queue.async {
@@ -289,8 +289,12 @@ class CameraMan {
     }
   }
 
-  func zoom() -> CGFloat {
+  func zoomFactor() -> CGFloat {
     return currentInput?.device.videoZoomFactor ?? 1.0
+  }
+
+  func maxZoomFactor() -> CGFloat {
+    return currentInput?.device.activeFormat.videoMaxZoomFactor ?? 1.0
   }
 
   // MARK: - Lock
