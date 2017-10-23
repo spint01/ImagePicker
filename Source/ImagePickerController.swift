@@ -140,8 +140,8 @@ open class ImagePickerController: UIViewController {
 
     _ = try? AVAudioSession.sharedInstance().setActive(true)
 
-//    statusBarHidden = UIApplication.shared.isStatusBarHidden
-//    UIApplication.shared.setStatusBarHidden(true, with: .fade)
+    statusBarHidden = UIApplication.shared.isStatusBarHidden
+    UIApplication.shared.setStatusBarHidden(true, with: .fade)
   }
 
   open override func viewDidAppear(_ animated: Bool) {
@@ -166,7 +166,7 @@ open class ImagePickerController: UIViewController {
 
   open override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-//    UIApplication.shared.setStatusBarHidden(statusBarHidden, with: .fade)
+    UIApplication.shared.setStatusBarHidden(statusBarHidden, with: .fade)
   }
 
   open func resetAssets() {
