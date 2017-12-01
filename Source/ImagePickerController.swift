@@ -425,6 +425,10 @@ extension ImagePickerController: CameraViewDelegate {
     bottomContainer.pickerButton.isEnabled = false
   }
 
+  func photoLibNotAvailable() {
+    bottomContainer.stackView.activityView.stopAnimating()
+  }
+  
   // MARK: - Rotation
 
   open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {

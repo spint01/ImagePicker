@@ -33,6 +33,7 @@ public struct Configuration {
   public var doneButtonTitle = "Done"
   public var noImagesTitle = "No images available"
   public var noCameraTitle = "Camera is not available"
+  public var noPhotoLibraryTitle = "No Photo Library Access"
   public var settingsTitle = "Settings"
   public var requestPermissionTitle = "Permission denied"
   public var requestPermissionMessage = "Please, allow the application to access to your photo library."

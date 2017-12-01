@@ -4,6 +4,7 @@ import PhotosUI
 
 protocol CameraManDelegate: class {
   func cameraManNotAvailable(_ cameraMan: CameraMan)
+  func cameraManPhotoLibNotAvailable(_ cameraMan: CameraMan)
   func cameraManDidStart(_ cameraMan: CameraMan)
   func cameraMan(_ cameraMan: CameraMan, didChangeInput input: AVCaptureDeviceInput)
 }
@@ -91,6 +92,27 @@ class CameraMan {
           self.delegate?.cameraManNotAvailable(self)
         }
       }
+    }
+  }
+
+  func checkSavePermission(completion: @escaping ((_ success: Bool) -> Void)) {
+    // Photos
+    let status = PHPhotoLibrary.authorizationStatus()
+    switch status {
+    case .authorized:
+        completion(true)
+    case .notDetermined:
+        PHPhotoLibrary.requestAuthorization({status in
+          if status == .authorized {
+            completion(true)
+          } else {
+            self.delegate?.cameraManPhotoLibNotAvailable(self)
+            completion(false)
+          }
+        })
+    default:
+      self.delegate?.cameraManPhotoLibNotAvailable(self)
+      completion(false)
     }
   }
 
@@ -194,46 +216,37 @@ class CameraMan {
   }
 
   func savePhoto(withData data: Data, location: CLLocation?, completion: (() -> Void)? = nil) {
-    PHPhotoLibrary.shared().performChanges({
-      if #available(iOS 9.0, *) {
-        // For iOS 9+ we can skip the temporary file step and write the image data from the buffer directly to an asset
-        let request = PHAssetCreationRequest.forAsset()
-        request.addResource(with: PHAssetResourceType.photo, data: data, options: nil)
-        request.creationDate = Date()
-        request.location = location
+    checkSavePermission { (success) in
+      if success {
+        PHPhotoLibrary.shared().performChanges({
+          let request = PHAssetCreationRequest.forAsset()
+          request.addResource(with: PHAssetResourceType.photo, data: data, options: nil)
+          request.creationDate = Date()
+          request.location = location
 
-        // save photo in given named album if set
-        if let albumName = self.albumName, !albumName.isEmpty {
-          var albumChangeRequest: PHAssetCollectionChangeRequest?
+          // save photo in given named album if set
+          if let albumName = self.albumName, !albumName.isEmpty {
+            var albumChangeRequest: PHAssetCollectionChangeRequest?
 
-          if let assetCollection = self.fetchAssetCollectionForAlbum(albumName) {
-            albumChangeRequest = PHAssetCollectionChangeRequest(for: assetCollection)
-          } else {
-            albumChangeRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
+            if let assetCollection = self.fetchAssetCollectionForAlbum(albumName) {
+              albumChangeRequest = PHAssetCollectionChangeRequest(for: assetCollection)
+            } else {
+              albumChangeRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
+            }
+            if let albumChangeRequest = albumChangeRequest, let assetPlaceholder = request.placeholderForCreatedAsset {
+              let enumeration: NSArray = [assetPlaceholder]
+              albumChangeRequest.addAssets(enumeration)
+            }
           }
-          if let albumChangeRequest = albumChangeRequest, let assetPlaceholder = request.placeholderForCreatedAsset {
-            let enumeration: NSArray = [assetPlaceholder]
-            albumChangeRequest.addAssets(enumeration)
+        }, completionHandler: { (success, error) in
+          DispatchQueue.main.async {
+            completion?()
           }
-        }
+        })
       } else {
-        // Fallback on earlier versions; write a temporary file and then add this file to the Camera Roll using the Photos API
-        let tmpURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("tempPhoto").appendingPathExtension("jpg")
-        do {
-          try data.write(to: tmpURL)
-
-          let request = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: tmpURL)
-          request?.creationDate = Date()
-          request?.location = location
-        } catch {
-          // Error writing the data; photo is not appended to the camera roll
-        }
-      }
-    }, completionHandler: { (success, error) in
-      DispatchQueue.main.async {
         completion?()
       }
-    })
+    }
   }
 
   func fetchAssetCollectionForAlbum(_ albumName: String) -> PHAssetCollection? {

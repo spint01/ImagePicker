@@ -7,6 +7,7 @@ protocol CameraViewDelegate: class {
   func setFlashButtonHidden(_ hidden: Bool)
   func imageToLibrary()
   func cameraNotAvailable()
+  func photoLibNotAvailable()
 }
 
 class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate {
@@ -50,6 +51,16 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
     label.font = self.configuration.noCameraFont
     label.textColor = self.configuration.noCameraColor
     label.text = self.configuration.noCameraTitle
+    label.sizeToFit()
+
+    return label
+    }()
+
+  lazy var noPhotoLibLabel: UILabel = { [unowned self] in
+    let label = UILabel()
+    label.font = self.configuration.noCameraFont
+    label.textColor = self.configuration.noCameraColor
+    label.text = self.configuration.noPhotoLibraryTitle
     label.sizeToFit()
 
     return label
@@ -168,11 +179,9 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
 
     let centerX = view.bounds.width / 2
 
-    noCameraLabel.center = CGPoint(x: centerX,
-      y: view.bounds.height / 2 - 80)
-
-    noCameraButton.center = CGPoint(x: centerX,
-      y: noCameraLabel.frame.maxY + 20)
+    noCameraLabel.center = CGPoint(x: centerX, y: view.bounds.height / 2 - 80)
+    noPhotoLibLabel.center = CGPoint(x: centerX, y: view.bounds.height / 2 - 80)
+    noCameraButton.center = CGPoint(x: centerX, y: noCameraLabel.frame.maxY + 20)
 
     blurView.frame = view.bounds
     containerView.frame = view.bounds
@@ -193,7 +202,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
   // MARK: - Camera actions
 
   func rotateCamera() {
-    UIView.animate(withDuration: 0.3, animations: { 
+    UIView.animate(withDuration: 0.3, animations: {
       self.containerView.alpha = 1
       }, completion: { _ in
         self.cameraMan.switchCamera {
@@ -249,7 +258,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
     cameraMan.focus(convertedPoint)
 
     focusImageView.center = point
-    UIView.animate(withDuration: 0.5, animations: { 
+    UIView.animate(withDuration: 0.5, animations: {
       self.focusImageView.alpha = 1
       self.focusImageView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
       }, completion: { _ in
@@ -299,11 +308,24 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
     }
   }
 
+  func showNoPhotoLib(_ show: Bool) {
+    // can reuse the camera button
+    [noCameraButton, noPhotoLibLabel].forEach {
+      show ? view.addSubview($0) : $0.removeFromSuperview()
+    }
+  }
+
   // CameraManDelegate
   func cameraManNotAvailable(_ cameraMan: CameraMan) {
     showNoCamera(true)
     focusImageView.isHidden = true
     delegate?.cameraNotAvailable()
+  }
+
+  func cameraManPhotoLibNotAvailable(_ cameraMan: CameraMan) {
+    showNoPhotoLib(true)
+    focusImageView.isHidden = true
+    delegate?.photoLibNotAvailable()
   }
 
   func cameraMan(_ cameraMan: CameraMan, didChangeInput input: AVCaptureDeviceInput) {
